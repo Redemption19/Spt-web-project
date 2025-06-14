@@ -35,6 +35,27 @@ class BlogPostResource extends Resource
     
     protected static ?string $recordTitleAttribute = 'title';
 
+    // Permission checks
+    public static function canViewAny(): bool
+    {
+        return auth()->user()->can('view_blog') || auth()->user()->isSuperAdmin();
+    }
+
+    public static function canCreate(): bool
+    {
+        return auth()->user()->can('create_blog') || auth()->user()->isSuperAdmin();
+    }
+
+    public static function canEdit($record): bool
+    {
+        return auth()->user()->can('edit_blog') || auth()->user()->isSuperAdmin();
+    }
+
+    public static function canDelete($record): bool
+    {
+        return auth()->user()->can('delete_blog') || auth()->user()->isSuperAdmin();
+    }
+
     public static function form(Form $form): Form
     {
         return $form

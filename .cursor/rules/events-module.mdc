@@ -1,0 +1,40 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Events Module Guide
+
+## Events
+### Endpoints
+- List events: `GET /api/events`
+- Create event: `POST /api/events`
+- Get event: `GET /api/events/{event_slug_or_id}`
+- Update event: `PUT/PATCH /api/events/{event_id}`
+- Delete event: `DELETE /api/events/{event_id}`
+
+### Query Parameters
+- `status`: Filter by status
+- `featured`: Filter featured events
+- `month`: Filter by month (YYYY-MM)
+- `upcoming`: Filter upcoming events
+- `past`: Filter past events
+- `sort`: Sort order (e.g., `-start_datetime`)
+
+## Event Speakers
+### Endpoints
+- List speakers: `GET /api/event-speakers`
+- Create speaker: `POST /api/event-speakers`
+- Get speaker: `GET /api/event-speakers/{speaker_slug_or_id}`
+- Update speaker: `PUT/PATCH /api/event-speakers/{speaker_id}`
+- Delete speaker: `DELETE /api/event-speakers/{speaker_id}`
+- Attach to event: `POST /api/events/{event_id}/speakers`
+- Detach from event: `DELETE /api/events/{event_id}/speakers/{speaker_id}`
+
+## Event Agenda
+### Endpoints
+- List agenda: `GET /api/events/{event_id}/agenda`
+- Create agenda item: `POST /api/events/{event_id}/agenda`
+- Update agenda item: `PUT/PATCH /api/agenda/{agenda_id}`
+- Delete agenda item: `DELETE /api/agenda/{agenda_id}`
+

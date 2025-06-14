@@ -24,7 +24,30 @@ class EventResource extends Resource
     
     protected static ?int $navigationSort = 1;
 
-    protected static ?string $recordTitleAttribute = 'title';    public static function form(Form $form): Form
+    protected static ?string $recordTitleAttribute = 'title';
+
+    // Permission checks
+    public static function canViewAny(): bool
+    {
+        return auth()->user()->can('view_events') || auth()->user()->isSuperAdmin();
+    }
+
+    public static function canCreate(): bool
+    {
+        return auth()->user()->can('create_events') || auth()->user()->isSuperAdmin();
+    }
+
+    public static function canEdit($record): bool
+    {
+        return auth()->user()->can('edit_events') || auth()->user()->isSuperAdmin();
+    }
+
+    public static function canDelete($record): bool
+    {
+        return auth()->user()->can('delete_events') || auth()->user()->isSuperAdmin();
+    }
+
+    public static function form(Form $form): Form
     {
         return $form
             ->schema([

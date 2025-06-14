@@ -1,0 +1,37 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Gallery Module Guide
+
+## Gallery Categories
+### Endpoints
+- List categories: `GET /api/gallery/categories`
+- Create category: `POST /api/gallery/categories`
+- Get category: `GET /api/gallery/categories/{category_slug_or_id}`
+- Update category: `PUT/PATCH /api/gallery/categories/{category_id}`
+- Delete category: `DELETE /api/gallery/categories/{category_id}`
+
+## Gallery Images
+### Endpoints
+- List images: `GET /api/gallery/images`
+- Upload image: `POST /api/gallery/images`
+- Get image: `GET /api/gallery/images/{image_id}`
+- Update image: `PUT/PATCH /api/gallery/images/{image_id}`
+- Delete image: `DELETE /api/gallery/images/{image_id}`
+
+### Query Parameters
+- `category`: Filter by category (slug or ID)
+- `sort`: Sort order (e.g., `-created_at`, `order_column`)
+
+### Image Upload
+- Use `multipart/form-data` format
+- Required fields:
+  - `file`: The image file
+  - `alt_text`: Alt text for accessibility
+- Optional fields:
+  - `category_id`: Category ID
+  - `title`: Image title
+  - `description`: Image description
+

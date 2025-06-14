@@ -1,0 +1,276 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# API Implementation Guide
+
+## Setting Up API Routes
+
+Create the `api.php` file in `backend/routes` with the following structure:
+
+```php
+<?php
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+
+// Authentication routes
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+
+// Blog routes
+Route::prefix('blog')->group(function () {
+    Route::get('/posts', [BlogPostController::class, 'index']);
+    Route::get('/posts/{post}', [BlogPostController::class, 'show']);
+    Route::post('/posts', [BlogPostController::class, 'store'])->middleware('auth:sanctum');
+    Route::put('/posts/{post}', [BlogPostController::class, 'update'])->middleware('auth:sanctum');
+    Route::delete('/posts/{post}', [BlogPostController::class, 'destroy'])->middleware('auth:sanctum');
+    
+    // Add routes for categories, tags, authors
+});
+
+// Event routes
+Route::prefix('events')->group(function () {
+    Route::get('/', [EventController::class, 'index']);
+    Route::get('/{event}', [EventController::class, 'show']);
+    Route::post('/', [EventController::class, 'store'])->middleware('auth:sanctum');
+    Route::put('/{event}', [EventController::class, 'update'])->middleware('auth:sanctum');
+    Route::delete('/{event}', [EventController::class, 'destroy'])->middleware('auth:sanctum');
+    
+    // Add routes for speakers, agenda, registrations
+});
+
+// Add routes for other modules
+```
+
+## Controller Implementation Example
+
+Here's an example of how to implement a controller:
+
+```php
+<?php
+
+namespace App\Http\Controllers\Api;
+
+use App\Http\Controllers\Controller;
+use App\Models\BlogPost;
+use App\Http\Resources\BlogPostResource;
+use Illuminate\Http\Request;
+
+class BlogPostController extends Controller
+{
+    public function index(Request $request)
+    {
+        $query = BlogPost::query();
+        
+        // Apply filters
+        if ($request->has('category')) {
+            $query->where('category_id', $request->category);
+        }
+        
+        if ($request->has('author')) {
+            $query->where('author_id', $request->author);
+        }
+        
+        // Apply sorting
+        $sort = $request->input('sort', '-published_at');
+        $direction = 'asc';
+        
+        if (strpos($sort, '-') === 0) {
+            $sort = substr($sort, 1);
+            $direction = 'desc';
+        }
+        
+        $query->orderBy($sort, $direction);
+        
+        // Paginate results
+        $posts = $query->paginate($request->input('per_page', 15));
+        
+        return BlogPostResource::collection($posts);
+    }
+    
+    public function show(BlogPost $post)
+    {
+        return new BlogPostResource($post);
+    }
+    
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'content_html' => 'required|string',
+            'excerpt' => 'nullable|string',
+            'category_id' => 'required|exists:blog_categories,id',
+            'author_id' => 'required|exists:blog_authors,id',
+            'status' => 'required|in:draft,published,archived',
+            'is_featured' => 'boolean',
+            'tags' => 'array'
+        ]);
+        
+        $post = BlogPost::create($validated);
+        
+        if ($request->has('tags')) {
+            $post->tags()->sync($request->tags);
+        }
+        
+        return new BlogPostResource($post);
+    }
+    
+    public function update(Request $request, BlogPost $post)
+    {
+        $validated = $request->validate([
+            'title' => 'string|max:255',
+            'content_html' => 'string',
+            'excerpt' => 'nullable|string',
+            'category_id' => 'exists:blog_categories,id',
+            'author_id' => 'exists:blog_authors,id',
+            'status' => 'in:draft,published,archived',
+            'is_featured' => 'boolean',
+            'tags' => 'array'
+        ]);
+        
+        $post->update($validated);
+        
+        if ($request->has('tags')) {
+            $post->tags()->sync($request->tags);
+        }
+        
+        return new BlogPostResource($post);
+    }
+    
+    public function destroy(BlogPost $post)
+    {
+        $post->delete();
+        
+        return response()->noContent();
+    }
+}
+```
+
+## API Resource Example
+
+```php
+<?php
+
+namespace App\Http\Resources;
+
+use Illuminate\Http\Resources\Json\JsonResource;
+
+class BlogPostResource extends JsonResource
+{
+    public function toArray($request)
+    {
+        return [
+            'id' => $this->id,
+            'title' => $this->title,
+            'slug' => $this->slug,
+            'content_html' => $this->content_html,
+            'excerpt' => $this->excerpt,
+            'featured_image_url' => $this->featured_image_url,
+            'status' => $this->status,
+            'is_featured' => (bool) $this->is_featured,
+            'published_at' => $this->published_at,
+            'author' => new BlogAuthorResource($this->whenLoaded('author')),
+            'category' => new BlogCategoryResource($this->whenLoaded('category')),
+            'tags' => BlogTagResource::collection($this->whenLoaded('tags')),
+            'view_count' => $this->view_count,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+        ];
+    }
+}
+```
+
+## Frontend API Integration
+
+Create API service files in the frontend:
+
+```typescript
+// api/blog.ts
+import axios from 'axios';
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
+
+export const getBlogPosts = async (params = {}) => {
+  try {
+    const response = await axios.get(`${API_URL}/blog/posts`, { params });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching blog posts:', error);
+    throw error;
+  }
+};
+
+export const getBlogPost = async (slug) => {
+  try {
+    const response = await axios.get(`${API_URL}/blog/posts/${slug}`);
+    return response.data;
+  } catch (error) {
+    console.error(`Error fetching blog post ${slug}:`, error);
+    throw error;
+  }
+};
+
+// Add more API functions
+```
+
+Use the API in components:
+
+```typescript
+// components/blog-list.tsx
+"use client"
+
+import { useEffect, useState } from 'react';
+import { getBlogPosts } from '@/api/blog';
+import BlogCard from './blog-card';
+import { Pagination } from './ui/pagination';
+
+export function BlogList() {
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [page, setPage] = useState(1);
+  const [meta, setMeta] = useState(null);
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        setLoading(true);
+        const response = await getBlogPosts({ page });
+        setPosts(response.data);
+        setMeta(response.meta);
+        setLoading(false);
+      } catch (err) {
+        setError('Failed to load blog posts');
+        setLoading(false);
+      }
+    };
+
+    fetchPosts();
+  }, [page]);
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>{error}</div>;
+
+  return (
+    <div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {posts.map(post => (
+          <BlogCard key={post.id} post={post} />
+        ))}
+      </div>
+      
+      {meta && (
+        <Pagination 
+          currentPage={meta.current_page}
+          totalPages={meta.last_page}
+          onPageChange={setPage}
+        />
+      )}
+    </div>
+  );
+}
+```
+

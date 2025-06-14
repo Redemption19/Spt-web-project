@@ -1,0 +1,43 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Forms and User Interactions Guide
+
+## Contact Form
+### Endpoints
+- Submit contact: `POST /api/forms/contact`
+- Admin list: `GET /api/admin/contact-submissions`
+- Admin update: `PUT/PATCH /api/admin/contact-submissions/{id}`
+- Admin delete: `DELETE /api/admin/contact-submissions/{id}`
+
+## Newsletter
+### Endpoints
+- Subscribe: `POST /api/newsletter/subscribe`
+- Confirm: `POST /api/newsletter/confirm`
+- Unsubscribe: `POST /api/newsletter/unsubscribe`
+- Admin list: `GET /api/admin/newsletter-subscribers`
+- Admin update: `PUT/PATCH /api/admin/newsletter-subscribers/{id}`
+- Admin delete: `DELETE /api/admin/newsletter-subscribers/{id}`
+
+## Event Registration
+### Endpoints
+- Register: `POST /api/events/{event_id}/register`
+- Admin list: `GET /api/events/{event_id}/registrations`
+- Admin update: `PUT/PATCH /api/admin/event-registrations/{id}`
+- Admin delete: `DELETE /api/admin/event-registrations/{id}`
+
+## Surveys
+### Endpoints
+- Get survey: `GET /api/surveys/{survey_slug_or_id}`
+- Submit response: `POST /api/surveys/{survey_id}/responses`
+- Admin results: `GET /api/admin/surveys/{survey_id}/results`
+
+## Generic Forms
+### Endpoints
+- Submit form: `POST /api/forms/{form_identifier}/submit`
+- Admin list: `GET /api/admin/form-submissions/{form_identifier}`
+- Admin update: `PUT/PATCH /api/admin/form-submissions/{id}`
+- Admin delete: `DELETE /api/admin/form-submissions/{id}`
+

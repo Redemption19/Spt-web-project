@@ -1,0 +1,43 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# API Structure Guidelines
+
+## Base URL
+All API endpoints are prefixed with `/api`
+
+## Authentication
+- Most endpoints require authentication via Sanctum or Passport
+- Authentication endpoints:
+  - Login: `POST /api/login`
+  - Logout: `POST /api/logout`
+  - Register: `POST /api/register`
+  - Get User: `GET /api/user`
+
+## Response Format
+- All responses are in JSON format
+- Single resources are namespaced under a `data` key
+- Paginated responses include `links` and `meta` objects
+
+## Error Handling
+Standard HTTP status codes:
+- 400: Bad Request
+- 401: Unauthorized
+- 403: Forbidden
+- 404: Not Found
+- 405: Method Not Allowed
+- 422: Unprocessable Entity
+- 500: Internal Server Error
+
+## Pagination
+- List endpoints are paginated by default (15 items per page)
+- Use `page` query parameter (e.g., `?page=2`)
+- Pagination info in `links` and `meta` objects
+
+## Request Format
+- Use JSON format
+- Set `Content-Type: application/json`
+- Set `Accept: application/json`
+

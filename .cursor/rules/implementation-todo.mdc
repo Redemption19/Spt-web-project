@@ -1,0 +1,88 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Implementation TODO List
+
+## Backend Tasks
+
+### API Routes
+- Create `api.php` file in the `backend/routes` directory
+- Define all API routes according to the PRD document
+
+### Controllers
+Create the following controllers in `backend/app/Http/Controllers/Api`:
+
+1. **Blog Controllers**
+   - `BlogPostController`
+   - `BlogCategoryController`
+   - `BlogTagController`
+   - `BlogAuthorController`
+
+2. **Events Controllers**
+   - `EventController`
+   - `EventSpeakerController`
+   - `EventAgendaController`
+   - `EventRegistrationController`
+
+3. **Gallery Controllers**
+   - `GalleryCategoryController`
+   - `GalleryImageController`
+
+4. **Form Controllers**
+   - `ContactFormController`
+   - `NewsletterSubscriptionController`
+   - `SurveyResponseController`
+   - `FormSubmissionController`
+
+5. **Other Controllers**
+   - `TestimonialController`
+   - `DownloadController`
+   - `HeroSectionController`
+
+### API Resources
+Create Laravel API Resources for each model to control the data exposed in the API:
+- `BlogPostResource`
+- `EventResource`
+- `GalleryImageResource`
+- etc.
+
+### Authentication
+- Set up Laravel Sanctum for API authentication
+- Implement login, register, and logout endpoints
+- Set up appropriate middleware for protected routes
+
+## Frontend Tasks
+
+### API Integration
+- Create API service files in the frontend to interact with the backend
+- Replace simulated form submissions with actual API calls
+- Implement proper error handling for API responses
+
+### Data Fetching
+- Implement data fetching from the API for:
+  - Blog posts and categories
+  - Events and registrations
+  - Gallery images
+  - Testimonials
+  - Downloads
+  - Hero sections
+
+### Authentication
+- Implement authentication flow in the frontend
+- Create login and registration forms
+- Handle authentication tokens and user sessions
+
+## Testing
+
+### Backend Tests
+- Create PHPUnit tests for API endpoints
+- Test authentication and authorization
+- Test validation rules
+
+### Frontend Tests
+- Create tests for API integration
+- Test form submissions
+- Test authentication flow
+

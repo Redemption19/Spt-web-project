@@ -1,0 +1,44 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Blog Module Guide
+
+## Blog Posts
+### Endpoints
+- List posts: `GET /api/blog/posts`
+- Create post: `POST /api/blog/posts`
+- Get post: `GET /api/blog/posts/{post_slug_or_id}`
+- Update post: `PUT/PATCH /api/blog/posts/{post_id}`
+- Delete post: `DELETE /api/blog/posts/{post_id}`
+- Increment view: `POST /api/blog/posts/{post_id}/increment-view`
+
+### Query Parameters
+- `category`: Filter by category (slug or ID)
+- `author`: Filter by author (slug or ID)
+- `tag`: Filter by tag (slug or ID)
+- `status`: Filter by status
+- `featured`: Filter featured posts
+- `sort`: Sort order (e.g., `-published_at`, `title`)
+- `per_page`: Items per page
+
+## Blog Categories
+### Endpoints
+- List categories: `GET /api/blog/categories`
+- Create category: `POST /api/blog/categories`
+- Get category: `GET /api/blog/categories/{category_slug_or_id}`
+- Update category: `PUT/PATCH /api/blog/categories/{category_id}`
+- Delete category: `DELETE /api/blog/categories/{category_id}`
+
+### Query Parameters
+- `hierarchical`: Get nested structure (boolean)
+
+## Blog Tags
+### Endpoints
+- List tags: `GET /api/blog/tags`
+- Create tag: `POST /api/blog/tags`
+- Get tag: `GET /api/blog/tags/{tag_slug_or_id}`
+- Update tag: `PUT/PATCH /api/blog/tags/{tag_id}`
+- Delete tag: `DELETE /api/blog/tags/{tag_id}`
+

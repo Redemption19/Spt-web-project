@@ -1,0 +1,35 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Hero Sections Module Guide
+
+## Public Endpoints
+### Get Hero Sections
+- `GET /api/hero-sections/{placement_identifier}`
+- Returns active hero sections for specific placement
+- Ordered by `order_column`
+
+## Admin Endpoints
+### Manage Hero Sections
+- List all: `GET /api/admin/hero-sections`
+- Create: `POST /api/admin/hero-sections`
+- Update: `PUT/PATCH /api/admin/hero-sections/{id}`
+- Delete: `DELETE /api/admin/hero-sections/{id}`
+
+### Hero Section Fields
+- `placement_identifier`: Section placement (e.g., 'home_page_main')
+- `title`: Section title
+- `subtitle`: Section subtitle
+- `cta_text`: Call-to-action text
+- `cta_link`: Call-to-action link
+- `image_url_desktop`: Desktop image URL
+- `image_url_mobile`: Mobile image URL
+- `video_url`: Video URL (optional)
+- `text_alignment`: Text alignment ('left', 'center', 'right')
+- `order_column`: Sorting order
+- `is_active`: Active status
+- `active_period_start`: Start date of active period
+- `active_period_end`: End date of active period
+

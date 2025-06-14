@@ -1,0 +1,31 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Testimonials Module Guide
+
+## Public Endpoints
+### List Testimonials
+- `GET /api/testimonials`
+- Query Parameters:
+  - `limit`: Number of testimonials to return
+  - `random`: Return random testimonials (boolean)
+
+## Admin Endpoints
+### Manage Testimonials
+- List all: `GET /api/admin/testimonials`
+- Create: `POST /api/admin/testimonials`
+- Update: `PUT/PATCH /api/admin/testimonials/{testimonial_id}`
+- Delete: `DELETE /api/admin/testimonials/{testimonial_id}`
+
+### Testimonial Fields
+- `author_name`: Name of the testimonial author
+- `author_title_company`: Author's title and company
+- `author_avatar_url`: URL to author's avatar image
+- `body`: The testimonial content
+- `rating`: Rating (1-5)
+- `source`: Source of the testimonial
+- `is_published`: Publication status
+- `published_at`: Publication date
+

@@ -23,6 +23,27 @@ class FormSubmissionResource extends Resource
 
     protected static ?int $navigationSort = 1;
 
+    // Permission checks
+    public static function canViewAny(): bool
+    {
+        return auth()->user()->can('view_forms') || auth()->user()->isSuperAdmin();
+    }
+
+    public static function canCreate(): bool
+    {
+        return auth()->user()->can('manage_form_submissions') || auth()->user()->isSuperAdmin();
+    }
+
+    public static function canEdit($record): bool
+    {
+        return auth()->user()->can('manage_form_submissions') || auth()->user()->isSuperAdmin();
+    }
+
+    public static function canDelete($record): bool
+    {
+        return auth()->user()->can('manage_form_submissions') || auth()->user()->isSuperAdmin();
+    }
+
     public static function form(Form $form): Form
     {
         return $form

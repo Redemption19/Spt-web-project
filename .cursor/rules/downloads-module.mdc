@@ -1,0 +1,40 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Downloads Module Guide
+
+## Public Endpoints
+### List Downloads
+- `GET /api/downloads`
+- Query Parameters:
+  - `category`: Filter by category (slug or ID)
+
+### Download Process
+1. Request download: `GET /api/downloads/{download_slug_or_id}/request`
+   - Returns download URL with token
+2. Serve file: `GET /api/downloads/{download_slug_or_id}/serve`
+   - Query Parameters:
+     - `token`: Download token (if required)
+
+## Admin Endpoints
+### Manage Downloads
+- List all: `GET /api/admin/downloads`
+- Create: `POST /api/admin/downloads`
+- Update: `PUT/PATCH /api/admin/downloads/{download_id}`
+- Delete: `DELETE /api/admin/downloads/{download_id}`
+
+### Download Fields
+- `title`: Resource title
+- `description`: Resource description
+- `slug`: Unique identifier for download link
+- `file_path`: Internal storage path
+- `original_filename`: Original file name
+- `mime_type`: File MIME type
+- `size`: File size in bytes
+- `version`: Resource version
+- `is_public`: Public access flag
+- `download_count`: Number of downloads
+- `category_id`: Category ID
+
