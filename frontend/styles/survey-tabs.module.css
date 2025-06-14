@@ -1,0 +1,51 @@
+/* Custom styles for survey tabs */
+.tabContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.tabsList {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0;
+}
+
+/* Custom desktop layout */
+@media (min-width: 640px) {
+  .tabsList {
+    /* Use a 4 column layout with explicit ordering */
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-areas: "a b c d";
+    gap: 0;
+  }
+
+  /* Ensure equal distribution of tabs */
+  .tabItem {
+    min-width: 5rem;
+    text-align: center;
+    flex: 1;
+  }
+
+  /* Ensure the Member Portal tab is centered by giving all tabs equal width */
+  .tabsList > :nth-child(1) { grid-area: a; }
+  .tabsList > :nth-child(2) { grid-area: b; }
+  .tabsList > :nth-child(3) { grid-area: c; }
+  .tabsList > :nth-child(4) { grid-area: d; }
+}
+
+/* Mobile layout improvements */
+@media (max-width: 639px) {
+  .tabsList {
+    gap: 0;
+  }
+
+  /* Improved touch targets for mobile */
+  .tabItem {
+    padding: 0.75rem 0.25rem;
+    font-size: 0.875rem;
+  }
+}
